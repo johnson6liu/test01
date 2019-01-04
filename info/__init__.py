@@ -3,10 +3,12 @@ from logging.handlers import RotatingFileHandler
 
 import redis
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, session
+from flask import Flask
 from flask_session import Session
-from config import Config, config_dict
+from config import config_dict
 
+db = SQLAlchemy()
+redis_store = None
 
 def create_app(env):
     app = Flask(__name__)
@@ -18,18 +20,22 @@ def create_app(env):
 
     app.config.from_object(config_classname)
 
-    # 注册首页蓝图到app中
-    from info.modules.index import index_blu
-    app.register_blueprint(index_blu)
 
     # 创建SQLAlchemy对象
-    db = SQLAlchemy(app)
+
+    db.init_app(app)
 
     # 创建redis仓库
+    global redis_store
     redis_store = redis.StrictRedis(host=config_classname.REDIS_HOST, port=config_classname.REDIS_PORT, db=0)
 
     # 创建Session对象
     Session(app)
+
+    # 注册首页蓝图到app中  #因首页蓝图最后执行渲染到网页,故须其他代码执行完毕才开始,防止代码报错.
+    from info.modules.index import index_blu
+    app.register_blueprint(index_blu)
+
     return app
 
 

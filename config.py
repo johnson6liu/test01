@@ -8,6 +8,7 @@ class Config(object):
 
     # mysql数据库相关配置
     SQLALCHEMY_DATABASE_URI = "mysql://root:Aa201810@127.0.0.1:3306/test01"  # mysql数据库链接地址
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False  # 设置不跟踪数据库的修改
 
     # redis数据库配置
