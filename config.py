@@ -1,3 +1,4 @@
+import logging
 import redis
 
 
@@ -23,8 +24,10 @@ class Config(object):
 
 class Development(Config):
     DEBUG = True
+    LOG_LV = logging.DEBUG  # 配置日志等级
 
 class Production(Config):
     DEBUG = False
+    LOG_LV = logging.ERROR   # 配置日志等级
 
 config_dict={"develop":Development,"product":Production}
