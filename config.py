@@ -19,3 +19,12 @@ class Config(object):
     SESSION_USE_SIGNER = True  # 签名存储
     SESSION_REDIS = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT) # 制定存储位置
     PERMANENT_SESSION_LIFETIME = 3600 * 24 * 2  # 设置session两天有效
+
+
+class Development(Config):
+    DEBUG = True
+
+class Production(Config):
+    DEBUG = False
+
+config_dict={"develop":Development,"product":Production}
